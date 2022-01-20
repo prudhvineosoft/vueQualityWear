@@ -66,18 +66,23 @@
                     ><i class="fa fa-user"></i> Account</router-link
                   >
                 </li>
-                <li>
-                  <a href="#"><i class="fa fa-star"></i> Wishlist</a>
-                </li>
-                <li>
-                  <router-link to="/checkout"
-                    ><i class="fa fa-crosshairs"></i> Checkout</router-link
-                  >
-                </li>
-                <li>
+
+                <li></li>
+                <li v-if="numInCart > 0">
                   <router-link to="/cart"
-                    ><i class="fa fa-shopping-cart"></i> Cart</router-link
+                    ><i class="fa fa-shopping-cart"></i> Cart
+                    {{ numInCart }}</router-link
                   >
+                </li>
+                <li v-if="numInCart == 0">
+                  <router-link to="/wishlist"
+                    ><i class="far fa-heart text-danger"></i> Wishlist
+                  </router-link>
+                </li>
+                <li v-if="numInCart == 0">
+                  <router-link to="/cart"
+                    ><i class="fa fa-shopping-cart"></i> Cart
+                  </router-link>
                 </li>
 
                 <li v-if="isLogin"></li>
@@ -136,7 +141,6 @@
                         >Product details</router-link
                       >
                     </li>
-                    <li><router-link to="/checkout">Checkout</router-link></li>
                     <li><router-link to="/cart">Cart</router-link></li>
                     <li v-if="isLogin">
                       <button @click="logout()">
@@ -151,11 +155,12 @@
                   </ul>
                 </li>
                 <li class="dropdown">
-                  <a href="#">Blog<i class="fa fa-angle-down"></i></a>
+                  <a>Pages<i class="fa fa-angle-down"></i></a>
                   <ul role="menu" class="sub-menu">
-                    <li><router-link to="/blog">Blog List</router-link></li>
-                    <li>
-                      <router-link to="/blogsingle">Blog-single</router-link>
+                    <li v-for="each in cms" :key="each.id">
+                      <router-link :to="{ path: `/cms/${each.id}` }">{{
+                        each.title
+                      }}</router-link>
                     </li>
                   </ul>
                 </li>
@@ -179,16 +184,27 @@
 
 <script>
 import { mapState } from "vuex";
-// import { userLogout } from "@/common/Service";
+import { getcms } from "@/common/Service";
 import store from "../store/store";
 import * as type from "../store/types";
 export default {
   name: "Header",
+  data() {
+    return {
+      cms: null,
+    };
+  },
 
   computed: mapState({
     isLogin: (state) => state.isLogged,
     token: (state) => state.token,
     email: (state) => state.email,
+    inCart() {
+      return this.$store.getters.inCart;
+    },
+    numInCart() {
+      return this.inCart.length;
+    },
   }),
   methods: {
     logout() {
@@ -200,6 +216,7 @@ export default {
       // const bodyParameters = {
       //   key: "value",
       // };
+      this.$router.push("/");
       this.$toast.success("Logout successful");
       localStorage.removeItem("id_token");
       localStorage.removeItem("uid");
@@ -253,9 +270,15 @@ export default {
         });
       }
     },
+    pages() {
+      getcms().then((res) => {
+        this.cms = res.data.cms;
+      });
+    },
   },
   mounted: function mounted() {
     this.checking();
+    this.pages();
   },
 };
 </script>

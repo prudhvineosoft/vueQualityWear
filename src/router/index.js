@@ -13,7 +13,24 @@ import Productdetails from '../components/Productdetails.vue'
 import Checkout from '../components/Checkout.vue'
 import Sign from '../components/Sign.vue'
 import Account from '../components/Account.vue'
-
+import Thankyou from '../components/Thankyou.vue'
+import Wishlist from '../components/Wishlist.vue'
+import CMS from '../components/CMS.vue'
+function myGaurd(to,from,next){
+    let isAuthenticated = false;
+    if(localStorage.getItem('uid')) {
+      isAuthenticated = true;
+    }else{
+      isAuthenticated = false;
+    }
+    if(isAuthenticated) {
+      next();
+    }else {
+        next('/login');
+        alert('login required')
+    }
+    
+  }
 
 const routes = [
     {
@@ -49,7 +66,14 @@ const routes = [
     {
         path: '/account',
         name: 'account',
+        beforeEnter:myGaurd,
         component: Account
+    },
+    {
+        path: '/wishlist',
+        name: 'wishlist',
+        beforeEnter:myGaurd,
+        component: Wishlist
     },
     {
         path: '/cart',
@@ -67,9 +91,19 @@ const routes = [
         component: Shop
     },
     {
+        path: '/success',
+        name: 'thankyou',
+        component: Thankyou
+    },
+    {
         path: '/Productdetails/:id',
         name: 'Productdetails',
         component: Productdetails
+    },
+    {
+        path: '/cms/:id',
+        name: 'cms',
+        component: CMS
     },
     {
         path: '/category/:catName',
@@ -79,6 +113,7 @@ const routes = [
     {
         path: '/checkout',
         name: 'Checkout',
+        beforeEnter:myGaurd,
         component: Checkout
     },
 ];

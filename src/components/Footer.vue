@@ -16,7 +16,7 @@
           <div class="col-sm-7">
             <div class="col-sm-3">
               <div class="video-gallery text-center">
-                <a href="#">
+                <a href="<%= BASE_URL %>">
                   <div class="iframe-img">
                     <img src="images/home/iframe1.png" alt="" />
                   </div>
@@ -31,7 +31,7 @@
 
             <div class="col-sm-3">
               <div class="video-gallery text-center">
-                <a href="#">
+                <a href="<%= BASE_URL %>">
                   <div class="iframe-img">
                     <img src="images/home/iframe2.png" alt="" />
                   </div>
@@ -46,7 +46,7 @@
 
             <div class="col-sm-3">
               <div class="video-gallery text-center">
-                <a href="#">
+                <a href="<%= BASE_URL %>">
                   <div class="iframe-img">
                     <img src="images/home/iframe3.png" alt="" />
                   </div>
@@ -61,7 +61,7 @@
 
             <div class="col-sm-3">
               <div class="video-gallery text-center">
-                <a href="#">
+                <a href="<%= BASE_URL %>">
                   <div class="iframe-img">
                     <img src="images/home/iframe4.png" alt="" />
                   </div>

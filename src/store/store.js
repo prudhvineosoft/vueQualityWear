@@ -14,6 +14,11 @@ const store = createStore({
       eachProduct: null,
       eachProductImages:null,
       category:null,
+      inCart:JSON.parse(localStorage.getItem('myCart'))?JSON.parse(localStorage.getItem('myCart')):[],
+      cartFinalData:null
+   },
+   getters:{
+      inCart: state => state.inCart
    },
    mutations:{
       login(state,payload) {
@@ -39,7 +44,12 @@ const store = createStore({
       },
       category(state,payload) {
          return state.category = payload.category
-      }
+      },
+      ADD_TO_CART(state,id){ state.inCart.push(id)},
+      DEL_ITEM(state, id) { state.inCart.splice(id, 1) },
+      cartFinalData(state,payload) {
+         return state.cartFinalData = payload.cartFinalData
+      },
       
    },
    actions:{
@@ -66,6 +76,11 @@ const store = createStore({
       },
       category(countext,payload) {
          countext.commit('category',payload)
+      },
+      addToCart(context,id) { context.commit('ADD_TO_CART',id)},
+      remItem(context, id) { context.commit('DEL_ITEM', id) },
+      cartFinalData(countext,payload) {
+         countext.commit('cartFinalData',payload)
       },
    }
 })

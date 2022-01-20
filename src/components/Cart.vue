@@ -13,7 +13,7 @@
             <thead>
               <tr class="cart_menu">
                 <td class="image">Item</td>
-                <td class="description"></td>
+                <td class="description">name</td>
                 <td class="price">Price</td>
                 <td class="quantity">Quantity</td>
                 <td class="total">Total</td>
@@ -21,108 +21,8 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td class="cart_product">
-                  <a href=""><img src="images/cart/one.png" alt="" /></a>
-                </td>
-                <td class="cart_description">
-                  <h4><a href="">Colorblock Scuba</a></h4>
-                  <p>Web ID: 1089772</p>
-                </td>
-                <td class="cart_price">
-                  <p>$59</p>
-                </td>
-                <td class="cart_quantity">
-                  <div class="cart_quantity_button">
-                    <a class="cart_quantity_up" href=""> + </a>
-                    <input
-                      class="cart_quantity_input"
-                      type="text"
-                      name="quantity"
-                      value="1"
-                      autocomplete="off"
-                      size="2"
-                    />
-                    <a class="cart_quantity_down" href=""> - </a>
-                  </div>
-                </td>
-                <td class="cart_total">
-                  <p class="cart_total_price">$59</p>
-                </td>
-                <td class="cart_delete">
-                  <a class="cart_quantity_delete" href=""
-                    ><i class="fa fa-times"></i
-                  ></a>
-                </td>
-              </tr>
-
-              <tr>
-                <td class="cart_product">
-                  <a href=""><img src="images/cart/two.png" alt="" /></a>
-                </td>
-                <td class="cart_description">
-                  <h4><a href="">Colorblock Scuba</a></h4>
-                  <p>Web ID: 1089772</p>
-                </td>
-                <td class="cart_price">
-                  <p>$59</p>
-                </td>
-                <td class="cart_quantity">
-                  <div class="cart_quantity_button">
-                    <a class="cart_quantity_up" href=""> + </a>
-                    <input
-                      class="cart_quantity_input"
-                      type="text"
-                      name="quantity"
-                      value="1"
-                      autocomplete="off"
-                      size="2"
-                    />
-                    <a class="cart_quantity_down" href=""> - </a>
-                  </div>
-                </td>
-                <td class="cart_total">
-                  <p class="cart_total_price">$59</p>
-                </td>
-                <td class="cart_delete">
-                  <a class="cart_quantity_delete" href=""
-                    ><i class="fa fa-times"></i
-                  ></a>
-                </td>
-              </tr>
-              <tr>
-                <td class="cart_product">
-                  <a href=""><img src="images/cart/three.png" alt="" /></a>
-                </td>
-                <td class="cart_description">
-                  <h4><a href="">Colorblock Scuba</a></h4>
-                  <p>Web ID: 1089772</p>
-                </td>
-                <td class="cart_price">
-                  <p>$59</p>
-                </td>
-                <td class="cart_quantity">
-                  <div class="cart_quantity_button">
-                    <a class="cart_quantity_up" href=""> + </a>
-                    <input
-                      class="cart_quantity_input"
-                      type="text"
-                      name="quantity"
-                      value="1"
-                      autocomplete="off"
-                      size="2"
-                    />
-                    <a class="cart_quantity_down" href=""> - </a>
-                  </div>
-                </td>
-                <td class="cart_total">
-                  <p class="cart_total_price">$59</p>
-                </td>
-                <td class="cart_delete">
-                  <a class="cart_quantity_delete" href=""
-                    ><i class="fa fa-times"></i
-                  ></a>
-                </td>
+              <tr v-for="data in productsData" :key="data.id">
+                <each-cart-item :data="data" :method="getData" />
               </tr>
             </tbody>
           </table>
@@ -145,64 +45,50 @@
             <div class="chose_area">
               <ul class="user_option">
                 <li>
-                  <input type="checkbox" />
+                  <input type="checkbox" v-model="checked" />
                   <label>Use Coupon Code</label>
                 </li>
-                <li>
-                  <input type="checkbox" />
-                  <label>Use Gift Voucher</label>
-                </li>
-                <li>
-                  <input type="checkbox" />
-                  <label>Estimate Shipping & Taxes</label>
-                </li>
               </ul>
-              <ul class="user_info">
-                <li class="single_field">
-                  <label>Country:</label>
-                  <select>
-                    <option>United States</option>
-                    <option>Bangladesh</option>
-                    <option>UK</option>
-                    <option>India</option>
-                    <option>Pakistan</option>
-                    <option>Ucrane</option>
-                    <option>Canada</option>
-                    <option>Dubai</option>
-                  </select>
-                </li>
-                <li class="single_field">
-                  <label>Region / State:</label>
-                  <select>
-                    <option>Select</option>
-                    <option>Dhaka</option>
-                    <option>London</option>
-                    <option>Dillih</option>
-                    <option>Lahore</option>
-                    <option>Alaska</option>
-                    <option>Canada</option>
-                    <option>Dubai</option>
-                  </select>
-                </li>
-                <li class="single_field zip-field">
-                  <label>Zip Code:</label>
-                  <input type="text" />
-                </li>
-              </ul>
-              <a class="btn btn-default update" href="">Get Quotes</a>
-              <a class="btn btn-default check_out" href="">Continue</a>
+              <div v-if="checked">
+                <select
+                  class="form-control select"
+                  v-model="selectedCoupon"
+                  required
+                  @change="changeLocation"
+                >
+                  <option selected>Choose Coupon</option>
+                  <option
+                    v-for="coupon in availableCoupons"
+                    :key="coupon.id"
+                    v-bind:value="coupon.id"
+                  >
+                    {{ coupon.code }}
+                  </option>
+                </select>
+              </div>
+              <a class="btn btn-default check_out" @click="addingCoupon()"
+                >Continue</a
+              >
             </div>
           </div>
           <div class="col-sm-6">
             <div class="total_area">
               <ul>
-                <li>Cart Sub Total <span>$59</span></li>
-                <li>Eco Tax <span>$2</span></li>
+                <li>
+                  Cart Sub Total <span>{{ this.subtotal }}</span>
+                </li>
+                <li v-if="couponAmmount == null">coupon <span>0 /-</span></li>
+                <li v-if="couponAmmount != null">
+                  coupon <span>{{ this.couponAmmount }} /-</span>
+                </li>
                 <li>Shipping Cost <span>Free</span></li>
-                <li>Total <span>$61</span></li>
+                <li>
+                  Total <span>{{ this.fullTotal }}</span>
+                </li>
               </ul>
-              <a class="btn btn-default update" href="">Update</a>
-              <a class="btn btn-default check_out" href="">Check Out</a>
+              <a class="btn btn-default check_out" @click="checkout"
+                >Check Out</a
+              >
             </div>
           </div>
         </div>
@@ -213,10 +99,173 @@
 </template>
 
 <script>
+import {
+  getProductsDataById,
+  addUserCartData,
+  userCartData,
+  editUserCartData,
+  coupon,
+} from "@/common/Service";
+import { mapState } from "vuex";
+import EachCartItem from "./eachCartItem.vue";
+import store from "../store/store";
+import * as type from "../store/types";
 export default {
   name: "Cart",
+  components: { EachCartItem },
+  data() {
+    return {
+      productsData: [],
+      subtotal: null,
+      server: "http://127.0.0.1:8000/uploads/",
+      checked: false,
+      availableCoupons: [],
+      selectedCoupon: null,
+      selectedCouponName: null,
+      couponAmmount: null,
+      fullTotal: null,
+    };
+  },
+  computed: mapState({
+    isLogin: (state) => state.isLogged,
+    token: (state) => state.token,
+    email: (state) => state.email,
+    inCart() {
+      return this.$store.getters.inCart;
+    },
+    numInCart() {
+      return this.productsData.length;
+    },
+  }),
+  mounted() {
+    this.getData();
+  },
+  methods: {
+    getData() {
+      this.productsData = [];
+      let dataFromlocal = JSON.parse(localStorage.getItem("myCart"));
+      if (dataFromlocal != undefined) {
+        dataFromlocal.forEach((element) => {
+          getProductsDataById(element.pid).then((res) => {
+            let productData = {
+              pid: element.pid,
+              name: res.data.productData.name,
+              price: res.data.productData.price,
+              quantity: res.data.productData.quantity,
+              image: res.data.images[0].img_path,
+              applied_quantity: element.quantity,
+              cartId: res.data.productData.id,
+              total: res.data.productData.price * element.quantity,
+            };
+            this.productsData.push(productData);
+            this.total();
+          });
+        });
+      }
+      if (this.isLogin) {
+        let dataFromlocal = JSON.parse(localStorage.getItem("myCart"));
+        if (dataFromlocal != undefined) {
+          dataFromlocal.forEach((element) => {
+            userCartData(20).then((res) => {
+              const arr = res.data.cartData;
+              let obj = {
+                product_id: element.pid,
+                user_id: 20,
+                quantity: element.quantity,
+              };
+              const i = arr.findIndex(
+                (_item) => _item.product_id === obj.product_id
+              );
+              if (i > -1) {
+                //let data = arr[i];
+                let uq = { quantity: element.quantity };
+                editUserCartData(res.data.cartData[i].id, uq);
+              } else {
+                addUserCartData(obj);
+              }
+            });
+          });
+        } else {
+          console.log("no data");
+        }
+      }
+      store.dispatch({
+        type: type.CartFinalData,
+        cartFinalData: {
+          cartData: this.productsData,
+          couponAmmount: this.couponAmmount,
+          fullTotal: this.fullTotal,
+          subtotal: this.subtotal,
+          selectedCouponName: this.selectedCouponName,
+        },
+      });
+      this.getCoupon();
+      this.selectedCoupon = null;
+      this.couponAmmount = null;
+    },
+    total() {
+      let fulltotal = 0;
+      this.productsData.forEach((each) => {
+        fulltotal += each.total;
+      });
+      this.subtotal = fulltotal;
+      this.fullTotal = fulltotal;
+      console.log(fulltotal);
+    },
+    checkout() {
+      store.dispatch({
+        type: type.CartFinalData,
+        cartFinalData: {
+          cartData: this.productsData,
+          couponAmmount: this.couponAmmount,
+          fullTotal: this.fullTotal,
+          subtotal: this.subtotal,
+          selectedCouponName: this.selectedCouponName,
+        },
+      });
+      this.$router.push("/checkout");
+    },
+    getCoupon() {
+      this.availableCoupons = [];
+      coupon().then((res) => {
+        console.log(res.data);
+        let couponData = res.data.couponData;
+        couponData.forEach((element) => {
+          if (element.cart_value < this.subtotal) {
+            this.availableCoupons.push(element);
+          }
+        });
+      });
+    },
+    addingCoupon() {
+      this.availableCoupons.forEach((each) => {
+        if (each.id == this.selectedCoupon) {
+          this.selectedCouponName = each.code;
+          if (each.type == "percent") {
+            let couponAmmount = Math.round((each.value / 100) * this.subtotal);
+            this.couponAmmount = couponAmmount;
+            this.fullTotal = this.fullTotal - this.couponAmmount;
+          } else {
+            let couponAmmount = each.value;
+            this.couponAmmount = Math.round(couponAmmount);
+            this.fullTotal = this.fullTotal - this.couponAmmount;
+          }
+        }
+      });
+    },
+  },
 };
 </script>
 
 <style>
+.input-size {
+  width: 50px;
+}
+.description {
+  width: 300px !important;
+}
+.select {
+  width: 200px;
+  margin-left: 40px;
+}
 </style>

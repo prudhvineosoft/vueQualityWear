@@ -6,3 +6,4 @@ export const Products = 'products';
 export const EachProduct = 'eachProduct';
 export const EachProductImages = 'eachProductImages';
 export const Category = 'category';
+export const CartFinalData = 'cartFinalData'

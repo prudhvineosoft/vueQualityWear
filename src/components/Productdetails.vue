@@ -55,7 +55,11 @@
             <span class="ml-3">{{ price }}/-</span>
             <label>Quantity:</label>
             <input type="number" value="1" />
-            <button type="button ml-3" class="btn btn-fefault cart">
+            <button
+              type="button ml-3"
+              @click="addToCart(eachProduct.id)"
+              class="btn btn-fefault cart"
+            >
               <i class="fa fa-shopping-cart"></i>
               Add to cart
             </button>
@@ -90,6 +94,7 @@ export default {
       description: null,
       price: null,
       quantity: null,
+      id: null,
       server: "http://127.0.0.1:8000/uploads/",
     };
   },
@@ -107,6 +112,7 @@ export default {
           (this.description = res.data.productData.description),
           (this.price = res.data.productData.price),
           (this.quantity = res.data.productData.quantity),
+          (this.quantity = res.data.productData.id),
           store.dispatch({
             type: type.EachProduct,
             eachProduct: res.data.productData,
@@ -116,6 +122,31 @@ export default {
           eachProductImages: res.data.images,
         });
       });
+    },
+    addToCart(id) {
+      if (localStorage.getItem("myCart") != undefined) {
+        let arr = JSON.parse(localStorage.getItem("myCart"));
+        let obj = { pid: id, quantity: 1 };
+        const i = arr.findIndex((_item) => _item.pid === obj.pid);
+        if (i > -1) {
+          let data = arr[i];
+          data.quantity += 1;
+          localStorage.setItem("myCart", JSON.stringify(arr));
+          this.$toast.success("Quantity Updated");
+        } else {
+          arr.push(obj);
+          localStorage.setItem("myCart", JSON.stringify(arr));
+          this.$store.dispatch("addToCart", arr);
+          this.$toast.success("Item Added");
+        }
+      } else {
+        let arr = [];
+        let obj = { pid: id, quantity: 1 };
+        arr.push(obj);
+        localStorage.setItem("myCart", JSON.stringify(arr));
+        this.$store.dispatch("addToCart", arr);
+        this.$toast.success("Item Added");
+      }
     },
   },
   watch: {

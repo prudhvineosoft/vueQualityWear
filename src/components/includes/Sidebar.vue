@@ -5,17 +5,11 @@
       <div class="panel-group category-products" id="accordian">
         <!--category-productsr-->
         <div class="panel panel-default">
-          <div class="panel-heading category">
-            <h4 class="panel-title">
-              <router-link
-                id="box"
-                :to="{ path: `/category/` }"
-                class="sidebar-link"
-              >
-                All Products
-              </router-link>
-            </h4>
-          </div>
+          <router-link id="box" :to="{ path: `/category/all` }" class="">
+            <div class="panel-heading category">
+              <h4 class="panel-title sidebar-link">All Products</h4>
+            </div>
+          </router-link>
         </div>
 
         <div
@@ -23,17 +17,17 @@
           v-for="category in categoryArray"
           :key="category.id"
         >
-          <div class="panel-heading category">
-            <h4 class="panel-title">
-              <router-link
-                id="box"
-                :to="{ path: `/category/${category.c_name}` }"
-                class="sidebar-link"
-              >
+          <router-link
+            id="box"
+            :to="{ path: `/category/${category.c_name}` }"
+            class=""
+          >
+            <div class="panel-heading category">
+              <h4 class="panel-title sidebar-link">
                 {{ category.c_name }}
-              </router-link>
-            </h4>
-          </div>
+              </h4>
+            </div>
+          </router-link>
         </div>
       </div>
       <!--/category-products-->
@@ -93,5 +87,6 @@ export default {
 .sidebar-link {
   background-color: transparent;
   border: none;
+  color: black;
 }
 </style>
