@@ -179,10 +179,12 @@ export default {
       if (products == undefined) {
         this.getData();
       } else if (this.category == "all") {
-        return this.products;
+        this.$router.push("/");
       } else {
         return this.category
-          ? products.filter((product) => !product.c_name.indexOf(this.category))
+          ? products.filter(
+              (product) => !product.category.c_name.indexOf(this.category)
+            )
           : products;
       }
     },
