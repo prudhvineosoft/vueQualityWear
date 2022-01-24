@@ -391,10 +391,10 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="orders in userOrders" :key="orders.id">
-              <td>1</td>
-              <td>{{ orders.name }}</td>
-              <td>{{ orders.price }}</td>
+            <tr v-for="(orders, index) in userOrders" :key="orders.id">
+              <td>{{ index + 1 }}</td>
+              <td>{{ orders.product_details.name }}</td>
+              <td>{{ orders.product_details.price }}</td>
               <td
                 class="text-gray text-weight-bolder"
                 v-if="orders.o_status == undefined"
@@ -498,8 +498,8 @@ export default {
       showUserData(this.email, "hai", this.token)
         .then((res) => {
           console.log(res.data);
-          this.userData = res.data.udUser;
-          this.userAddress = res.data.udAddress;
+          this.userData = res.data.allUserData;
+          this.userAddress = res.data.allUserData.address;
           this.userOrders = res.data.orderData;
         })
         .catch((err) => {

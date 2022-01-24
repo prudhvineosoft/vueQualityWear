@@ -7,7 +7,7 @@
           <div id="slider-carousel" class="carousel slide" data-ride="carousel">
             <ol class="carousel-indicators">
               <li
-                v-for="(banner, index) in eachProductImages"
+                v-for="(banner, index) in product_images"
                 v-bind:key="index"
                 data-target="#slider-carousel"
                 :data-slide-to="index"
@@ -17,7 +17,7 @@
 
             <div class="carousel-inner">
               <div
-                v-for="(banner, index) in eachProductImages"
+                v-for="(banner, index) in product_images"
                 v-bind:key="index"
                 v-bind:class="index == 0 ? 'item active' : 'item'"
               >
@@ -95,6 +95,7 @@ export default {
       price: null,
       quantity: null,
       id: null,
+      product_images: null,
       server: "http://127.0.0.1:8000/uploads/",
     };
   },
@@ -113,10 +114,11 @@ export default {
           (this.price = res.data.productData.price),
           (this.quantity = res.data.productData.quantity),
           (this.quantity = res.data.productData.id),
-          store.dispatch({
-            type: type.EachProduct,
-            eachProduct: res.data.productData,
-          });
+          (this.product_images = res.data.productData.product_images);
+        store.dispatch({
+          type: type.EachProduct,
+          eachProduct: res.data.productData,
+        });
         store.dispatch({
           type: type.EachProductImages,
           eachProductImages: res.data.images,

@@ -195,8 +195,8 @@ export default {
       showUserData(this.email, "hai", this.token)
         .then((res) => {
           console.log(res.data);
-          this.userData = res.data.udUser;
-          this.userAddress = res.data.udAddress;
+          this.userData = res.data.allUserData;
+          this.userAddress = res.data.allUserData.address;
         })
         .catch((err) => {
           console.log("SOmething Wrong " + err);

@@ -46,11 +46,7 @@
         <!--/login form-->
       </div>
       <div class="col-sm-3">
-        <img
-          src="../../../../QualityWear/public/images/logo.png"
-          width="300"
-          alt=""
-        />
+        <img src="images/my/logo.png" width="300" alt="" />
       </div>
     </div>
   </div>

@@ -50,11 +50,10 @@
           <div class="col-sm-5">
             <div class="logo pull-left">
               <a href="index.html"
-                ><img
-                  src="../../../../QualityWear/public/images/logo.png"
-                  width="35"
-                  alt=""
-                /><span class="logo-heading">Quality Wear</span></a
+                ><img src="images/my/logo.png" width="35" alt="" /><span
+                  class="logo-heading"
+                  >Quality Wear</span
+                ></a
               >
             </div>
           </div>
@@ -74,7 +73,7 @@
                     {{ numInCart }}</router-link
                   >
                 </li>
-                <li v-if="numInCart == 0">
+                <li>
                   <router-link to="/wishlist"
                     ><i class="far fa-heart text-danger"></i> Wishlist
                   </router-link>

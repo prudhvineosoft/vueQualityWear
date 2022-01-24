@@ -99,13 +99,7 @@
 </template>
 
 <script>
-import {
-  getProductsDataById,
-  addUserCartData,
-  userCartData,
-  editUserCartData,
-  coupon,
-} from "@/common/Service";
+import { getProductsDataById, coupon } from "@/common/Service";
 import { mapState } from "vuex";
 import EachCartItem from "./eachCartItem.vue";
 import store from "../store/store";
@@ -152,7 +146,7 @@ export default {
               name: res.data.productData.name,
               price: res.data.productData.price,
               quantity: res.data.productData.quantity,
-              image: res.data.images[0].img_path,
+              image: res.data.productData.product_images[0].img_path,
               applied_quantity: element.quantity,
               cartId: res.data.productData.id,
               total: res.data.productData.price * element.quantity,
@@ -162,33 +156,33 @@ export default {
           });
         });
       }
-      if (this.isLogin) {
-        let dataFromlocal = JSON.parse(localStorage.getItem("myCart"));
-        if (dataFromlocal != undefined) {
-          dataFromlocal.forEach((element) => {
-            userCartData(20).then((res) => {
-              const arr = res.data.cartData;
-              let obj = {
-                product_id: element.pid,
-                user_id: 20,
-                quantity: element.quantity,
-              };
-              const i = arr.findIndex(
-                (_item) => _item.product_id === obj.product_id
-              );
-              if (i > -1) {
-                //let data = arr[i];
-                let uq = { quantity: element.quantity };
-                editUserCartData(res.data.cartData[i].id, uq);
-              } else {
-                addUserCartData(obj);
-              }
-            });
-          });
-        } else {
-          console.log("no data");
-        }
-      }
+      // if (this.isLogin) {
+      //   let dataFromlocal = JSON.parse(localStorage.getItem("myCart"));
+      //   if (dataFromlocal != undefined) {
+      //     dataFromlocal.forEach((element) => {
+      //       userCartData(16).then((res) => {
+      //         const arr = res.data.cartData;
+      //         let obj = {
+      //           product_id: element.pid,
+      //           user_id: 20,
+      //           quantity: element.quantity,
+      //         };
+      //         const i = arr.findIndex(
+      //           (_item) => _item.product_id === obj.product_id
+      //         );
+      //         if (i > -1) {
+      //           //let data = arr[i];
+      //           let uq = { quantity: element.quantity };
+      //           editUserCartData(res.data.cartData[i].id, uq);
+      //         } else {
+      //           addUserCartData(obj);
+      //         }
+      //       });
+      //     });
+      //   } else {
+      //     console.log("no data");
+      //   }
+      // }
       store.dispatch({
         type: type.CartFinalData,
         cartFinalData: {

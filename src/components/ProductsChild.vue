@@ -24,9 +24,9 @@
 </template>
 
 <script>
-//import { mapState } from "vuex";
+import { mapState } from "vuex";
 //import axios from "axios";
-import { getProductImagessData, postwishlist } from "@/common/Service";
+import { postwishlist } from "@/common/Service";
 //import { mapActions } from "vuex";
 // import store from "../store/store";
 // import * as type from "../store/types";
@@ -40,26 +40,26 @@ export default {
       server: "http://127.0.0.1:8000/uploads/",
     };
   },
-  // computed: mapState({
-  //   isLogin: (state) => state.isLogged,
-  //   token: (state) => state.token,
-  //   email: (state) => state.email,
-  //   inCart() {
-  //     return this.$store.getters.inCart;
-  //   },
-  //   numInCart() {
-  //     return this.inCart.length;
-  //   },
-  // }),
+  computed: mapState({
+    isLogin: (state) => state.isLogged,
+    token: (state) => state.token,
+    email: (state) => state.email,
+    inCart() {
+      return this.$store.getters.inCart;
+    },
+    numInCart() {
+      return this.inCart.length;
+    },
+  }),
   // mounted: function mounted() {
   //   this.getData();
   // },
   methods: {
-    getData() {
-      getProductImagessData(this.each.id).then((res) => {
-        this.images = res.data.images[0].img_path;
-      });
-    },
+    // getData() {
+    //   getProductImagessData(this.each.id).then((res) => {
+    //     this.images = res.data.images[0].img_path;
+    //   });
+    // },
     // upsert(array, item) {
     //   const i = array.findIndex((_item) => _item.pid === item.pid);
     //   if (i > -1) {
@@ -97,7 +97,7 @@ export default {
         user_email: this.email,
         pro_id: this.each.id,
         product_id: this.each.code,
-        product_name: this.each.c_name,
+        product_name: this.each.name,
         product_price: this.each.price,
         image_path: this.images,
       };
